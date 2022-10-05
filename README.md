@@ -18,11 +18,11 @@ We are going to push changes to the search infrastructure, the functionality sho
 1. Don't spend too long on it (2 hours max)
 
 ## Setup
-node version (`v14.16.1`)    
-npm version (`6.14.12`)
+node version (`v14.18.1`)    
+npm version (`6.14.15`)
 
 1. `npm install`
-1. `npm test`
+1. `npm test` or `npm run cy:open`
 
 ## On Completion
 - Fork and push your changes, then notify the hiring manager   
