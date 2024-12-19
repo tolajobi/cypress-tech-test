@@ -7,6 +7,6 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       return require('./cypress/plugins/index.js')(on, config)
     },
-    baseUrl: 'https://www.ceracare.co.uk',
+    baseUrl: 'https://www.bbc.co.uk',
   },
 })
