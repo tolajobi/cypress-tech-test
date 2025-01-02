@@ -1,6 +1,6 @@
 context("Search", () => {
   beforeEach(() => {
-    cy.visit("https://www.bbc.co.uk/");
+    cy.visit("/");
     cy.get(".ssrcss-payrv3-NavigationLink-SearchLink").click();
   });
 
@@ -41,72 +41,47 @@ context("Search", () => {
     searchThroughPages(); // Start the search process
   });
 
-  // it("verify no search results scenario", () => {
-  //   const invalidSearchTerm = "zxqwerty12345"; // Unlikely to return results
-  //   // Type and submit the search
-  //   cy.get("#searchInput")
-  //     .should("be.visible")
-  //     .clear()
-  //     .type(`${invalidSearchTerm}{enter}`); // Use Enter key to trigger search
+  it("verify no search results scenario", () => {
+    const invalidSearchTerm = "zxqwerty12345"; // Unlikely to return results
+    // Type and submit the search
+    cy.get("#searchInput")
+      .should("be.visible")
+      .clear()
+      .type(`${invalidSearchTerm}{enter}`); // Use Enter key to trigger search
 
-  //   // Verify that results container is visible but shows no results
-  //   cy.get(".results-container", { timeout: 10000 }).should("be.visible");
+    // Verify that no results message stack is visible
+    cy.get('.ssrcss-1qik2p5-Stack', { timeout: 20000 }).should("be.visible");
 
-  //   // Check for a 'no results' message or equivalent indication
-  //   cy.contains("No results found", { timeout: 5000 })
-  //     .should("exist")
-  //     .then(() => {
-  //       cy.log("Verified: No results found for the invalid search term.");
-  //     });
-  // });
+    // Check for a 'no results' message or equivalent indication
+    cy.contains("Sorry, there are no results for", { timeout: 5000 })
+      .should("exist")
+      .then(() => {
+        cy.log("Verified: No results found for the invalid search term.");
+      });
+  });
 
-  // it("verify behavior when navigating without results", () => {
-  //   const searchTerm = "zxqwerty12345"; // Unlikely to return results
+  it("verify behavior when navigating without results", () => {
+    const searchTerm = "zxqwerty12345"; // Unlikely to return results
 
-  //   // Type and submit the search
-  //   cy.get("#searchInput")
-  //     .should("be.visible")
-  //     .clear()
-  //     .type(`${searchTerm}{enter}`); // Use Enter key to trigger search
+    // Type and submit the search
+    cy.get("#searchInput")
+      .should("be.visible")
+      .clear()
+      .type(`${searchTerm}{enter}`); // Use Enter key to trigger search
 
-  //   // Check for navigation elements
-  //   cy.get(".results-container", { timeout: 10000 }).should("be.visible");
+    // Check for navigation elements
+    cy.get('.ssrcss-1qik2p5-Stack', { timeout: 20000 }).should("be.visible");
 
-  //   cy.get("body").then(($body) => {
-  //     if ($body.find(".ssrcss-i6xxyi-IconContainer.ekkqsa20").length) {
-  //       cy.get(".ssrcss-i6xxyi-IconContainer.ekkqsa20").click();
-  //       cy.wait(2000);
+    cy.get("body").then(($body) => {
+      if ($body.find(".ssrcss-i6xxyi-IconContainer.ekkqsa20").length) {
+        cy.get(".ssrcss-i6xxyi-IconContainer.ekkqsa20").click();
+        cy.wait(2000);
 
-  //       // Verify no further results are found
-  //       cy.contains("No results found", { timeout: 5000 }).should("exist");
-  //     } else {
-  //       cy.log("Verified: Navigation disabled due to lack of results.");
-  //     }
-  //   });
-  // });
-
-  // it("verify search failure due to backend or connectivity issue", () => {
-  //   // Simulate a network failure or backend error
-  //   cy.intercept("GET", /.*search.*/, {
-  //     statusCode: 500,
-  //     body: {
-  //       error: "Internal Server Error",
-  //     },
-  //   });
-
-  //   const searchTerm = "christmas";
-
-  //   // Type and submit the search
-  //   cy.get("#searchInput")
-  //     .should("be.visible")
-  //     .clear()
-  //     .type(`${searchTerm}{enter}`); // Use Enter key to trigger search
-
-  //   // Verify error message or fallback behavior
-  //   cy.contains("Something went wrong", { timeout: 5000 })
-  //     .should("exist")
-  //     .then(() => {
-  //       cy.log("Verified: Error message displayed for server failure.");
-  //     });
-  // });
+        // Verify no further results are found
+        cy.contains("Sorry, there are no results for", { timeout: 5000 }).should("exist");
+      } else {
+        cy.log("Verified: Navigation disabled due to lack of results.");
+      }
+    });
+  });
 });
